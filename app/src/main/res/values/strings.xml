@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">GPSLogger</string>
+    <string name="app_name" translatable="false">GPS Logger</string>
+
+    <!-- Tabs -->
+    <string name="tab_gpsfix">GPS Fix</string>
+    <string name="tab_track">Track</string>
+    <string name="tab_tracklist">Tracklist</string>
+
+    <!-- GPS Fix -->
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="time">Time</string>
+    <string name="satellites">Satellites</string>
+    <string name="altitude">Altitude</string>
+    <string name="speed">Speed</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="direction">Direction</string>
+
+    <!-- GPS Status messages -->
+    <string name="gps_searching">Looking for GPS</string>
+
+    <!-- Recording buttons (bottom side) -->
+    <string name="placemarks">Placemarks</string>
+    <string name="trackpoints">Trackpoints</string>
+
+    <!-- Main menu -->
+    <string name="toast_track_finished_click_again">Double click to finalize this track</string>
 </resources>

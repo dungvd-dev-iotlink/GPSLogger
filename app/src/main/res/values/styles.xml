@@ -8,4 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearanceLargeNumbers" parent="@android:style/TextAppearance.Large">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textSize">@dimen/TextAppearanceLargeNumbersSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearanceLargeUM" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textSize">@dimen/TextAppearanceTextUMSize</item>
+    </style>
+
 </resources>
