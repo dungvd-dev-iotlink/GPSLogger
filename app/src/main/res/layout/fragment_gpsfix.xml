@@ -140,15 +140,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TableLayout
                 android:id="@+id/tableLayoutTime"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
-                android:layout_weight="1"
                 android:background="@drawable/rounded_corner"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
@@ -181,43 +179,6 @@
 
             </TableLayout>
 
-            <TableLayout
-                android:id="@+id/tableLayoutSatellites"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_corner"
-                android:paddingTop="3dp"
-                android:paddingBottom="3dp"
-                android:visibility="invisible">
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewSatellites"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:freezesText="true"
-                        android:gravity="center_horizontal"
-                        android:textAppearance="@style/TextAppearanceLargeNumbers"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TextView
-                    android:id="@+id/textViewSatellitesLabel"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="@string/satellites"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="13sp" />
-
-            </TableLayout>
         </LinearLayout>
 
         <LinearLayout

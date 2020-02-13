@@ -25,4 +25,12 @@
 
     <!-- Main menu -->
     <string name="toast_track_finished_click_again">Double click to finalize this track</string>
+
+    <!-- Notification icon -->
+    <string name="notification_contentText">is active</string>
+    <string name="channel_name">GPSLogger Notifications</string>
+
+    <string name="location_allow_permission_msg">"Please allow all permissions in App Settings for additional
+        functionality. "
+    </string>
 </resources>
