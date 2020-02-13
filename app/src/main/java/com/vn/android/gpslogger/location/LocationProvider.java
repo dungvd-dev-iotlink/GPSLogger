@@ -6,7 +6,7 @@ public abstract class LocationProvider {
 
   protected LocationListener navigationLocationListener;
 
-  protected Context context;
+  protected final Context context;
 
   public LocationProvider(Context context) {
     this.context = context;

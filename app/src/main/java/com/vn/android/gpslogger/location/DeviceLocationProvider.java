@@ -21,8 +21,8 @@ public class DeviceLocationProvider extends LocationProvider {
   private static final String TAG = DeviceLocationProvider.class.getSimpleName();
   // TODO Choose best TIME_REQUEST_UPDATE_LOCATION later
 //  private long TIME_REQUEST_UPDATE_LOCATION = (long) (NavigationConstants.timeRequestUpdate * 1000);
-  private long TIME_REQUEST_UPDATE_LOCATION = 10L;
-  private float DISTANCE_REQUEST_UPDATE_LOCATION = 0f;
+  private final long TIME_REQUEST_UPDATE_LOCATION = 10L;
+  private final float DISTANCE_REQUEST_UPDATE_LOCATION = 0f;
   private static final int TWO_MINUTES = 1000 * 60 * 2;
 
   private Location lastLocation;
@@ -38,12 +38,12 @@ public class DeviceLocationProvider extends LocationProvider {
     super(context);
   }
 
-  public void initialize() {
+  private void initialize() {
     checkNetworkProviderEnable(); // check if gps is available
     getLocation(); // get location using Android API
   }
 
-  public void checkNetworkProviderEnable() {
+  private void checkNetworkProviderEnable() {
     locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -81,7 +81,7 @@ public class DeviceLocationProvider extends LocationProvider {
     };
   }
 
-  protected Location getBetterLocation(Location location, Location currentBestLocation) {
+  private Location getBetterLocation(Location location, Location currentBestLocation) {
     if (currentBestLocation == null) {
       // A new location is always better than no location
       return location;
@@ -133,7 +133,7 @@ public class DeviceLocationProvider extends LocationProvider {
     return provider1.equals(provider2);
   }
 
-  public void captureLocation() {
+  private void captureLocation() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
       && ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
       && ContextCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

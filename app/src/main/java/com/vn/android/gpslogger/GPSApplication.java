@@ -51,7 +51,7 @@ public class GPSApplication extends Application implements LocationListener {
         return singleton;
     }
 
-    private ServiceConnection gpsServiceConnection = new ServiceConnection() {
+    private final ServiceConnection gpsServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,

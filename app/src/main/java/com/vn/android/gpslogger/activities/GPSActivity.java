@@ -12,9 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,11 +20,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.vn.android.gpslogger.GPSApplication;
 import com.vn.android.gpslogger.fragments.FragmentGPSFix;
-import com.vn.android.gpslogger.fragments.FragmentTrack;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.adapters.ViewPagerAdapter;
 import com.vn.android.gpslogger.fragments.FragmentTracklist;
-import com.vn.android.gpslogger.location.LocationListener;
 import com.vn.android.gpslogger.models.GPSViewModel;
 
 import java.util.ArrayList;
@@ -41,9 +37,7 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
   private ViewPager viewPager;
   private View bottomSheet;
   private BottomSheetBehavior mBottomSheetBehavior;
-  Toast toastClickAgain;
   private LifecycleRegistry lifecycleRegistry;
-  private GPSViewModel gpsViewModel;
 
   private int activeTab = 1;
 
@@ -51,8 +45,6 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_gps);
-
-    gpsViewModel = ViewModelProviders.of(this).get(GPSViewModel.class);
 
     lifecycleRegistry = new LifecycleRegistry(this);
     lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
@@ -78,8 +70,6 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
 
     mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
     mBottomSheetBehavior.setHideable(false);
-    toastClickAgain = Toast.makeText(this, getString(R.string.toast_track_finished_click_again), Toast.LENGTH_SHORT);
-
     gpsApp.setGpsActivity(this);
   }
 
@@ -119,7 +109,6 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
   private void setupViewPager(ViewPager viewPager) {
     ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(new FragmentGPSFix(), getString(R.string.tab_gpsfix));
-    adapter.addFragment(new FragmentTrack(), getString(R.string.tab_track));
     adapter.addFragment(new FragmentTracklist(), getString(R.string.tab_tracklist));
     viewPager.setAdapter(adapter);
   }
@@ -136,7 +125,7 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
     }
   }
 
-  public boolean checkLocationPermission() {
+  private boolean checkLocationPermission() {
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
       return true;    // Permission Granted
     } else {
@@ -149,6 +138,18 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
             this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]) , REQUEST_ID_MULTIPLE_PERMISSIONS);
       }
       return false;
+    }
+  }
+
+  public void hideBottomSheet() {
+    if (bottomSheet.getVisibility() == View.VISIBLE) {
+      bottomSheet.setVisibility(View.INVISIBLE);
+    }
+  }
+
+  public void showBottomSheet() {
+    if (bottomSheet.getVisibility() == View.INVISIBLE) {
+      bottomSheet.setVisibility(View.VISIBLE);
     }
   }
 

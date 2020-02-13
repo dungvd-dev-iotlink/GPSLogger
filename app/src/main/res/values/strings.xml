@@ -12,9 +12,14 @@
     <string name="time">Time</string>
     <string name="satellites">Satellites</string>
     <string name="altitude">Altitude</string>
+    <string name="altitudeUM">m</string>
     <string name="speed">Speed</string>
+    <string name="speedUM">km/h</string>
     <string name="accuracy">Accuracy</string>
+    <string name="accuracyUM">m</string>
     <string name="direction">Direction</string>
+    <string name="startRecord">Start Record</string>
+    <string name="stopRecord">Stop Record</string>
 
     <!-- GPS Status messages -->
     <string name="gps_searching">Looking for GPS</string>
