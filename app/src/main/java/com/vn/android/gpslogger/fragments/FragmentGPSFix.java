@@ -135,6 +135,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
   private void update() {
     Location location = gpsApplication.getLocation();
     if (location != null) {
+      activity.showBottomSheet();
       DecimalFormat decimalFormatLong = new DecimalFormat("0.000000");
       DecimalFormat decimalFormatShort = new DecimalFormat("0.000");
 
@@ -143,12 +144,9 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
       tvLatitudeUM.setText(decimalFormatLong.format(location.getLatitude()));
       tvLongitudeUM.setText(decimalFormatLong.format(location.getLongitude()));
       tvAltitude.setText(decimalFormatShort.format(location.getAltitude()));
-      tvAltitudeUM.setText(decimalFormatShort.format(location.getAltitude()));
       tvSpeed.setText(decimalFormatShort.format(location.getSpeed()));
-      tvSpeedUM.setText(decimalFormatShort.format(location.getSpeed()));
       tvBearing.setText(decimalFormatShort.format(location.getBearing()));
       tvAccuracy.setText(decimalFormatShort.format(location.getAccuracy()));
-      tvAccuracyUM.setText(decimalFormatShort.format(location.getAccuracy()));
       tvTime.setText(location.getTime() + "");
 
       // Colorize the Altitude textview depending on the altitude EGM Correction
@@ -158,7 +156,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
 
       tvGPSFixStatus.setVisibility(View.GONE);
 
-      tvDirectionUM.setVisibility(/*prefDirections == 0 ? View.GONE :*/ View.VISIBLE);
+      tvDirectionUM.setVisibility(View.VISIBLE);
       tlTime.setVisibility(View.VISIBLE);
 
       tlCoordinates.setVisibility( View.VISIBLE);
@@ -187,6 +185,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
       });
 
     } else {
+      activity.hideBottomSheet();
       tlCoordinates.setVisibility(View.INVISIBLE);
       tlAltitude.setVisibility(View.INVISIBLE);
       tlSpeed.setVisibility(View.INVISIBLE);

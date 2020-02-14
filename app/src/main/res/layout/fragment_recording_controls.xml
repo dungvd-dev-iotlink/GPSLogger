@@ -26,67 +26,24 @@
     android:id="@+id/fragmentRecordingControls"
     android:background="@color/colorRecControlBackground"
     android:orientation="horizontal"
-    android:weightSum="2"
     android:baselineAligned="false">
 
-
     <TableLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/tableLayoutPlacemarks"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp">
-
-        <TextView
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/textColorRecControlSecondary"
-            android:text="@string/placemarks"
-            android:id="@+id/textViewPlacemarksLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:gravity="center_horizontal" />
+        android:id="@+id/tableLayoutRecording"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/textColorRecControlPrimary"
-            android:id="@+id/textViewPlacemarks"
+            android:id="@+id/tvRecording"
             android:freezesText="true"
             android:textStyle="bold"
-            android:text="0"
-            android:gravity="center_horizontal"/>
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:id="@+id/tableLayoutGeoPoints"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/textColorRecControlSecondary"
-            android:text="@string/trackpoints"
-            android:id="@+id/textViewGeoPointsLabel"
-            android:textSize="13sp"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/textColorRecControlPrimary"
-            android:id="@+id/textViewGeoPoints"
-            android:freezesText="true"
-            android:textStyle="bold"
-            android:text="0"
+            android:text="@string/startRecord"
             android:gravity="center_horizontal"/>
 
     </TableLayout>

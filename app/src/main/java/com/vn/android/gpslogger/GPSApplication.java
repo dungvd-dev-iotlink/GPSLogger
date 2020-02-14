@@ -1,13 +1,10 @@
-
 package com.vn.android.gpslogger;
-
 
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.IBinder;
@@ -16,15 +13,16 @@ import android.util.Log;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.vn.android.gpslogger.activities.GPSActivity;
+import com.vn.android.gpslogger.database.DatabaseManager;
 import com.vn.android.gpslogger.location.LocationListener;
 import com.vn.android.gpslogger.models.GPSViewModel;
+import com.vn.android.gpslogger.models.Point;
+import com.vn.android.gpslogger.models.Track;
 import com.vn.android.gpslogger.services.GPSService;
 
 public class GPSApplication extends Application implements LocationListener {
 
     private static final String TAG = GPSApplication.class.getSimpleName();
-    private static final String PREFS_NOBACKUP = "prefs_nobackup";
-    public static final String FLAG_RECORDING   = "flagRecording";  // The persistent Flag is set when the app is recording, in order to detect Background Crashes
 
     // Singleton instance
     private static GPSApplication singleton;
@@ -35,6 +33,7 @@ public class GPSApplication extends Application implements LocationListener {
     private Location location;
     private GPSViewModel gpsViewModel;
     private GPSActivity gpsActivity;
+    private Track track;
 
     // ---------------------------- Service ----------------------------
     Intent gpsServiceIntent;
@@ -51,7 +50,7 @@ public class GPSApplication extends Application implements LocationListener {
         return singleton;
     }
 
-    private ServiceConnection gpsServiceConnection = new ServiceConnection() {
+    private final ServiceConnection gpsServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className,
@@ -76,8 +75,25 @@ public class GPSApplication extends Application implements LocationListener {
 
     @Override
     public void onUpdatedLocation(Location location) {
+        if (location == null) {
+            Log.e(TAG, "Error when receive NULL Location");
+            return;
+        }
         gpsViewModel.updateLocation(location);
         this.location = location;
+        if (recording) {
+            recordNewTrack(location);
+        }
+    }
+
+    private void recordNewTrack(Location location) {
+        Point point = new Point(location.getLatitude(),
+            location.getLongitude(), location.getTime(),
+            location.getSpeed(), location.getBearing(),
+            location.getAccuracy(),
+            location.getAltitude());
+        track.addPoint(point);
+        Log.e("duydung", "Size cua track la: " + track.getPointList().size());
     }
 
     public Location getLocation() {
@@ -144,36 +160,23 @@ public class GPSApplication extends Application implements LocationListener {
         this.locationPermissionChecked = locationPermissionChecked;
     }
 
-    // Flags are Boolean SharedPreferences that are excluded by automatic Backups
-
-    public void flagAdd(String flag) {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NOBACKUP, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(flag, true);
-        editor.commit();
-    }
-
-
-    public void flagRemove(String flag) {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NOBACKUP, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove(flag);
-        editor.commit();
-    }
-
-
-    public boolean flagExists(String flag) {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NOBACKUP, Context.MODE_PRIVATE);
-        return preferences.getBoolean(flag, false);
-    }
-
     public boolean getRecording() {
         return recording;
     }
 
     public void setRecording(boolean recordingState) {
         recording = recordingState;
-        if (recording) flagAdd(FLAG_RECORDING);
-        else flagRemove(FLAG_RECORDING);
+        if (recording) {
+            track = new Track();
+        }
+        else {
+            // TODO : Save track to local memory
+            saveTrack(track);
+            track = null;
+        }
+    }
+
+    private void saveTrack(Track track) {
+        DatabaseManager.getInstance(getApplicationContext()).addTrack(track);
     }
 }

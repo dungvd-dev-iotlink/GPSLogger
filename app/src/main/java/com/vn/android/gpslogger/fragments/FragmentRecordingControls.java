@@ -1,6 +1,7 @@
 package com.vn.android.gpslogger.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.vn.android.gpslogger.GPSApplication;
 import com.vn.android.gpslogger.R;
 
 public class FragmentRecordingControls extends Fragment {
-  TableLayout tableLayoutGeoPoints;
-  TableLayout tableLayoutPlacemarks;
-
-  private TextView tvGeoPoints;
-  private TextView tvPlacemarks;
-  private TextView tvGeoPointsLabel;
-  private TextView tvPlacemarksLabel;
+  private TableLayout tableLayoutRecording;
+  private TextView tvRecording;
+  private GPSApplication gpsApplication;
 
   public FragmentRecordingControls() {
     // Required empty public constructor
@@ -29,29 +27,35 @@ public class FragmentRecordingControls extends Fragment {
   @Nullable
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    gpsApplication = GPSApplication.getInstance();
     View view = inflater.inflate(R.layout.fragment_recording_controls, container, false);
 
-    tableLayoutGeoPoints = (TableLayout) view.findViewById(R.id.tableLayoutGeoPoints);
-    tableLayoutGeoPoints.setOnClickListener(new View.OnClickListener() {
+    tableLayoutRecording = view.findViewById(R.id.tableLayoutRecording);
+    tableLayoutRecording.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-//        ontoggleRecordGeoPoint(v);
+        onToggleRecord(v);
       }
     });
 
-    tableLayoutPlacemarks = (TableLayout) view.findViewById(R.id.tableLayoutPlacemarks);
-    tableLayoutPlacemarks.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-//        onPlacemarkRequest(v);
-      }
-    });
-
-    tvGeoPoints = view.findViewById(R.id.textViewGeoPoints);
-    tvPlacemarks = view.findViewById(R.id.textViewPlacemarks);
-    tvGeoPointsLabel = view.findViewById(R.id.textViewGeoPointsLabel);
-    tvPlacemarksLabel = view.findViewById(R.id.textViewPlacemarksLabel);
+    tvRecording = view.findViewById(R.id.tvRecording);
 
     return view;
+  }
+
+  private void onToggleRecord(View v) {
+    if (tvRecording.getText().equals(getString(R.string.startRecord))) {
+      tvRecording.setText(R.string.stopRecord);
+      if (!gpsApplication.getRecording()) {
+        gpsApplication.setRecording(true);
+      }
+      else {
+        Log.e("Recording", "Error when start record new track");
+      }
+    }
+    else {
+      tvRecording.setText(R.string.startRecord);
+      gpsApplication.setRecording(false);
+    }
   }
 }
