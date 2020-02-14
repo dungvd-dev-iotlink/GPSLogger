@@ -7,14 +7,12 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
@@ -23,7 +21,6 @@ import com.vn.android.gpslogger.fragments.FragmentGPSFix;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.adapters.ViewPagerAdapter;
 import com.vn.android.gpslogger.fragments.FragmentTracklist;
-import com.vn.android.gpslogger.models.GPSViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
