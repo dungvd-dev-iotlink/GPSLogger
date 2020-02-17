@@ -27,7 +27,7 @@ public class DatabaseManager {
 
   private DatabaseManager(Context context) {
     this.context = context;
-    database = new TrackBaseHelper(context).getWritableDatabase();
+    database = new TrackBaseHelper(this.context).getWritableDatabase();
   }
 
   public static ContentValues getPointContentValues(Point point, UUID id) {
@@ -47,6 +47,7 @@ public class DatabaseManager {
     ContentValues values = new ContentValues();
     values.put(TrackDbSchema.TrackTable.Cols.ID, track.getId().toString());
     values.put(TrackDbSchema.TrackTable.Cols.NAME, track.getName());
+    values.put(TrackDbSchema.TrackTable.Cols.DATE, track.getDate());
     return values;
   }
 
@@ -90,9 +91,11 @@ public class DatabaseManager {
       while (!cursor.isAfterLast()) {
         String id = ((TrackCursorWrapper) cursor).getTrackId();
         String name = ((TrackCursorWrapper) cursor).getTrackName();
+        String date = ((TrackCursorWrapper) cursor).getDate();
         Track track = new Track();
         track.setId(UUID.fromString(id));
         track.setName(name);
+        track.setDate(date);
         track.setPointList(getPoints(UUID.fromString(id)));
         tracks.add(track);
         cursor.moveToNext();
@@ -117,9 +120,11 @@ public class DatabaseManager {
       }
       cursor.moveToFirst();
       String name = ((TrackCursorWrapper) cursor).getTrackName();
+      String date = ((TrackCursorWrapper) cursor).getDate();
       Track track = new Track();
       track.setId(id);
       track.setName(name);
+      track.setDate(date);
       track.setPointList(getPoints(id));
       cursor.close();
       return track;

@@ -1,17 +1,20 @@
 package com.vn.android.gpslogger.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class Track {
   private UUID id;
   private String name;
+  private String date;
   private List<Point> pointList;
 
   public Track() {
     name = "";
     id = UUID.randomUUID();
+    date = new Date().toString();
     pointList = new ArrayList<>();
   }
 
@@ -41,5 +44,13 @@ public class Track {
 
   public void addPoint(Point point) {
     this.pointList.add(point);
+  }
+
+  public String getDate() {
+    return date;
+  }
+
+  public void setDate(String date) {
+    this.date = date;
   }
 }
