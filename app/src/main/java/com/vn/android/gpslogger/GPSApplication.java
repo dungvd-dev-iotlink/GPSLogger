@@ -1,5 +1,6 @@
 package com.vn.android.gpslogger;
 
+import android.Manifest;
 import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,10 +11,13 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.core.content.PermissionChecker;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
 import com.vn.android.gpslogger.activities.GPSActivity;
 import com.vn.android.gpslogger.database.DatabaseManager;
+import com.vn.android.gpslogger.fragments.FragmentTrackList;
 import com.vn.android.gpslogger.location.LocationListener;
 import com.vn.android.gpslogger.models.GPSViewModel;
 import com.vn.android.gpslogger.models.Point;
@@ -101,7 +105,10 @@ public class GPSApplication extends Application implements LocationListener {
     }
 
     public void onResume() {
-        startAndBindGPSService();
+        if (PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED
+            && PermissionChecker.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PermissionChecker.PERMISSION_GRANTED) {
+            startAndBindGPSService();
+        }
         gpsViewModel = ViewModelProviders.of(getGpsActivity()).get(GPSViewModel.class);
     }
 
@@ -117,7 +124,7 @@ public class GPSApplication extends Application implements LocationListener {
         this.gpsActivity = gpsActivity;
     }
 
-    public void startAndBindGPSService() {
+    private void startAndBindGPSService() {
         gpsServiceIntent = new Intent(GPSApplication.this, GPSService.class);
         //Start the service
         startService(gpsServiceIntent);
@@ -170,13 +177,17 @@ public class GPSApplication extends Application implements LocationListener {
             track = new Track();
         }
         else {
-            // TODO : Save track to local memory
-            saveTrack(track);
-            track = null;
+            // TODO : Save track to local memory on other Thread
+            gpsActivity.showDialogInputName();
         }
     }
 
-    private void saveTrack(Track track) {
+    public void saveTrack(String name) {
+        track.setName(name);
         DatabaseManager.getInstance(getApplicationContext()).addTrack(track);
+        ViewPager viewPager = gpsActivity.getViewPager();
+        FragmentTrackList fragmentTrackList = (FragmentTrackList) viewPager.getAdapter().instantiateItem(viewPager, 1);
+        fragmentTrackList.updateUI();
+        track = null;
     }
 }

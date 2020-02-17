@@ -20,4 +20,8 @@ public class TrackCursorWrapper extends CursorWrapper {
   public String getTrackName() {
     return getString(getColumnIndex(TrackDbSchema.TrackTable.Cols.NAME));
   }
+
+  public String getDate() {
+    return getString(getColumnIndex(TrackDbSchema.TrackTable.Cols.DATE));
+  }
 }

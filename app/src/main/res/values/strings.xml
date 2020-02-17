@@ -35,7 +35,15 @@
     <string name="notification_contentText">is active</string>
     <string name="channel_name">GPSLogger Notifications</string>
 
+    <!-- Log string -->
     <string name="location_allow_permission_msg">"Please allow all permissions in App Settings for additional
         functionality. "
     </string>
+
+    <!-- Default string -->
+    <string name="no_name">No Name</string>
+
+    <!-- Dialog string -->
+    <string name="button_text">OK</string>
+    <string name="enter_track_name">Enter track name</string>
 </resources>

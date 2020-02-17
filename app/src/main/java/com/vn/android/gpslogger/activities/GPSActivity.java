@@ -17,15 +17,14 @@ import android.view.View;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.vn.android.gpslogger.GPSApplication;
+import com.vn.android.gpslogger.NameDialog;
 import com.vn.android.gpslogger.fragments.FragmentGPSFix;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.adapters.ViewPagerAdapter;
-import com.vn.android.gpslogger.fragments.FragmentTracklist;
+import com.vn.android.gpslogger.fragments.FragmentTrackList;
 
-import java.util.ArrayList;
-import java.util.List;
+public class GPSActivity extends AppCompatActivity implements LifecycleOwner, NameDialog.NameDialogListener {
 
-public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
   private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
 
   private final GPSApplication gpsApp = GPSApplication.getInstance();
@@ -106,13 +105,13 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
   private void setupViewPager(ViewPager viewPager) {
     ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     adapter.addFragment(new FragmentGPSFix(), getString(R.string.tab_gpsfix));
-    adapter.addFragment(new FragmentTracklist(), getString(R.string.tab_tracklist));
+    adapter.addFragment(new FragmentTrackList(), getString(R.string.tab_tracklist));
     viewPager.setAdapter(adapter);
   }
 
   private void updateBottomSheetPosition() {
     activeTab = tabLayout.getSelectedTabPosition();
-    if (activeTab != 2) {
+    if (activeTab != 1) {
       mBottomSheetBehavior.setPeekHeight(1);
       mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
       mBottomSheetBehavior.setPeekHeight(bottomSheet.getHeight());
@@ -129,10 +128,9 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
       boolean showRationale = ActivityCompat.shouldShowRequestPermissionRationale(
           this, Manifest.permission.ACCESS_FINE_LOCATION);
       if (showRationale || !gpsApp.isLocationPermissionChecked()) {
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        ActivityCompat.requestPermissions(
-            this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]) , REQUEST_ID_MULTIPLE_PERMISSIONS);
+        String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION};
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_ID_MULTIPLE_PERMISSIONS);
       }
       return false;
     }
@@ -150,7 +148,21 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner {
     }
   }
 
+  public void showDialogInputName() {
+    NameDialog dialog = new NameDialog();
+    dialog.show(getSupportFragmentManager(), "dialog");
+  }
+
+  public ViewPager getViewPager() {
+    return viewPager;
+  }
+
   public LifecycleOwner getLifeOwner() {
     return this;
+  }
+
+  @Override
+  public void applyName(String name) {
+    gpsApp.saveTrack(name);
   }
 }
