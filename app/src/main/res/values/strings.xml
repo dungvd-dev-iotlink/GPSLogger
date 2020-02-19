@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">GPS Logger</string>
+    <string name="app_name" translatable="false">GPS Tracking</string>
 
     <!-- Tabs -->
     <string name="tab_gpsfix">GPS Fix</string>
@@ -44,6 +44,14 @@
     <string name="no_name">No Name</string>
 
     <!-- Dialog string -->
-    <string name="button_text">OK</string>
+    <string name="button_confirm">OK</string>
+    <string name="button_cancel">Cancel</string>
     <string name="enter_track_name">Enter track name</string>
+    <string name="notice_title">Notice</string>
+    <string name="notice_upload_content">Are you sure to upload this track to Fire base ?</string>
+    <string name="notice_delete_content">Are you sure to delete this track ?</string>
+    <string name="uploading">Uploading ...</string>
+    <string name="upload_failed">Upload failed !!</string>
+    <string name="upload_success">JSON Uploaded !!</string>
+    <string name="upload_progress">Uploaded: %s</string>
 </resources>

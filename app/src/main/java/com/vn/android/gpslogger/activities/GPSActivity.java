@@ -150,6 +150,7 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner, Na
 
   public void showDialogInputName() {
     NameDialog dialog = new NameDialog();
+    dialog.setCancelable(false);
     dialog.show(getSupportFragmentManager(), "dialog");
   }
 

@@ -1,9 +1,10 @@
 package com.vn.android.gpslogger.viewholders;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,21 +12,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.models.Track;
 
-public class TrackHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class TrackHolder extends RecyclerView.ViewHolder {
 
   private TextView tvName;
   private TextView tvTime;
-  private Track track;
+  private ImageButton buttonDel;
+  private RelativeLayout itemListLayout;
 
   public TrackHolder(LayoutInflater inflater, ViewGroup parent) {
     super(inflater.inflate(R.layout.list_item_track, parent, false));
+    itemListLayout = itemView.findViewById(R.id.list_item_track_layout);
     tvName = itemView.findViewById(R.id.tvName);
     tvTime = itemView.findViewById(R.id.tvTime);
-    itemView.setOnClickListener(this);
+    buttonDel = itemView.findViewById(R.id.buttonDel);
   }
 
   public void bind(Track track) {
-    this.track = track;
     if (!track.getName().isEmpty()) {
       tvName.setText(track.getName());
     }
@@ -35,8 +37,11 @@ public class TrackHolder extends RecyclerView.ViewHolder implements View.OnClick
     tvTime.setText(track.getDate());
   }
 
-  @Override
-  public void onClick(View v) {
-    Log.e("duydung", "Dang bam vao item thu: ");
+  public RelativeLayout getItemListLayout() {
+    return itemListLayout;
+  }
+
+  public ImageButton getButtonDel() {
+    return buttonDel;
   }
 }
