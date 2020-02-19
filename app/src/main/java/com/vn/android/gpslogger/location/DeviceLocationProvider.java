@@ -19,8 +19,6 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 public class DeviceLocationProvider extends LocationProvider {
 
   private static final String TAG = DeviceLocationProvider.class.getSimpleName();
-  // TODO Choose best TIME_REQUEST_UPDATE_LOCATION later
-//  private long TIME_REQUEST_UPDATE_LOCATION = (long) (NavigationConstants.timeRequestUpdate * 1000);
   private final long TIME_REQUEST_UPDATE_LOCATION = 10L;
   private final float DISTANCE_REQUEST_UPDATE_LOCATION = 0f;
   private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -28,7 +26,6 @@ public class DeviceLocationProvider extends LocationProvider {
   private Location lastLocation;
   private Location location;
 
-  private static final int PERMISSION_REQUEST_CODE = 1000;
   private boolean isGPSEnabled;
   private boolean isNetworkEnabled;
   private LocationManager locationManager;

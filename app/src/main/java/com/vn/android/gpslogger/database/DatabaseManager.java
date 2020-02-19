@@ -28,6 +28,7 @@ public class DatabaseManager {
   private DatabaseManager(Context context) {
     this.context = context;
     database = new TrackBaseHelper(this.context).getWritableDatabase();
+    database.execSQL("PRAGMA foreign_keys = ON;");
   }
 
   public static ContentValues getPointContentValues(Point point, UUID id) {
@@ -132,6 +133,11 @@ public class DatabaseManager {
     else {
       return null;
     }
+  }
+
+  public void deleteTrack(UUID id) {
+    String[] whereArgs = {id.toString()};
+    database.delete(TrackDbSchema.TrackTable.NAME, TrackDbSchema.TrackTable.Cols.ID + " = ?", whereArgs);
   }
 
   private TrackCursorWrapper queryTrack(String whereClause, String[] whereArgs) {

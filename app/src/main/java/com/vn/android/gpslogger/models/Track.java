@@ -1,5 +1,8 @@
 package com.vn.android.gpslogger.models;
 
+import android.util.JsonWriter;
+
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,5 +55,33 @@ public class Track {
 
   public void setDate(String date) {
     this.date = date;
+  }
+
+  public String toJSon() {
+    StringWriter stringWriter = new StringWriter();
+    try {
+      JsonWriter jsonWriter = new JsonWriter(stringWriter);
+      jsonWriter.beginObject();
+      jsonWriter.name("name").value(name);
+      jsonWriter.name("data").beginArray();
+      for (Point point: pointList) {
+        jsonWriter.beginObject();
+        jsonWriter.name("lat").value(point.getLat());
+        jsonWriter.name("lng").value(point.getLng());
+        jsonWriter.name("timestamp").value(point.getTimestamp());
+        jsonWriter.name("speed").value(point.getSpeed());
+        jsonWriter.name("course").value(point.getCourse());
+        jsonWriter.name("accuracy").value(point.getAccuracy());
+        jsonWriter.name("altitude").value(point.getAltitude());
+        jsonWriter.endObject();
+      }
+      jsonWriter.endArray();
+      jsonWriter.endObject();
+    }
+    catch (Exception exception) {
+      exception.printStackTrace();
+      return "";
+    }
+    return stringWriter.toString();
   }
 }

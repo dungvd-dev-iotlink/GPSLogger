@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "83684795305",
+    "firebase_url": "https://gpslogger-b23b4.firebaseio.com",
+    "project_id": "gpslogger-b23b4",
+    "storage_bucket": "gpslogger-b23b4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83684795305:android:027683c63de3c4c133dab8",
+        "android_client_info": {
+          "package_name": "com.vn.android.gpslogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83684795305-v3phkr55hd5453rbsdimr0p6ls4e8u4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vn.android.gpslogger",
+            "certificate_hash": "694d01a0d1129efc1d95c9d2e4060925b43ce452"
+          }
+        },
+        {
+          "client_id": "83684795305-n3a95290qanrc072lbs08ciigtht8jih.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMuIfxk46VkOaxPa2wL3x8vwOSk2Bitd4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83684795305-n3a95290qanrc072lbs08ciigtht8jih.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

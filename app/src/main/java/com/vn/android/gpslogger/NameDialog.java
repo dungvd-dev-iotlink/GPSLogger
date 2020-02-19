@@ -26,7 +26,7 @@ public class NameDialog extends AppCompatDialogFragment {
 
     builder.setView(view)
         .setTitle(R.string.enter_track_name)
-        .setPositiveButton(R.string.button_text, new DialogInterface.OnClickListener() {
+        .setPositiveButton(R.string.button_confirm, new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
             String name = editTextName.getText().toString();
