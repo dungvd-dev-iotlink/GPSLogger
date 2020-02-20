@@ -21,7 +21,8 @@ public class TrackBaseHelper extends SQLiteOpenHelper {
         "create table " + TrackDbSchema.TrackTable.NAME + "(" +
             TrackDbSchema.TrackTable.Cols.ID + " text primary key, " +
             TrackDbSchema.TrackTable.Cols.NAME + ", " +
-            TrackDbSchema.TrackTable.Cols.DATE +
+            TrackDbSchema.TrackTable.Cols.DATE + ", " +
+            TrackDbSchema.TrackTable.Cols.UPLOADED +
             ")"
     );
 

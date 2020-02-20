@@ -20,6 +20,7 @@
     <string name="direction">Direction</string>
     <string name="startRecord">Start Record</string>
     <string name="stopRecord">Stop Record</string>
+    <string name="numberPoint">Points Recorded</string>
 
     <!-- GPS Status messages -->
     <string name="gps_searching">Looking for GPS</string>
@@ -54,4 +55,7 @@
     <string name="upload_failed">Upload failed !!</string>
     <string name="upload_success">JSON Uploaded !!</string>
     <string name="upload_progress">Uploaded: %s</string>
+
+    <!-- Item list string -->
+    <string name="item_points">%s points</string>
 </resources>

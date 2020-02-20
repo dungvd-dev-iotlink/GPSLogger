@@ -49,6 +49,7 @@ public class DatabaseManager {
     values.put(TrackDbSchema.TrackTable.Cols.ID, track.getId().toString());
     values.put(TrackDbSchema.TrackTable.Cols.NAME, track.getName());
     values.put(TrackDbSchema.TrackTable.Cols.DATE, track.getDate());
+    values.put(TrackDbSchema.TrackTable.Cols.UPLOADED, track.isUploaded() ? 1 : 0);
     return values;
   }
 
@@ -93,10 +94,12 @@ public class DatabaseManager {
         String id = ((TrackCursorWrapper) cursor).getTrackId();
         String name = ((TrackCursorWrapper) cursor).getTrackName();
         String date = ((TrackCursorWrapper) cursor).getDate();
+        boolean uploaded = ((TrackCursorWrapper) cursor).isUploaded();
         Track track = new Track();
         track.setId(UUID.fromString(id));
         track.setName(name);
         track.setDate(date);
+        track.setUploaded(uploaded);
         track.setPointList(getPoints(UUID.fromString(id)));
         tracks.add(track);
         cursor.moveToNext();
@@ -122,10 +125,12 @@ public class DatabaseManager {
       cursor.moveToFirst();
       String name = ((TrackCursorWrapper) cursor).getTrackName();
       String date = ((TrackCursorWrapper) cursor).getDate();
+      boolean uploaded = ((TrackCursorWrapper) cursor).isUploaded();
       Track track = new Track();
       track.setId(id);
       track.setName(name);
       track.setDate(date);
+      track.setUploaded(uploaded);
       track.setPointList(getPoints(id));
       cursor.close();
       return track;
@@ -138,6 +143,12 @@ public class DatabaseManager {
   public void deleteTrack(UUID id) {
     String[] whereArgs = {id.toString()};
     database.delete(TrackDbSchema.TrackTable.NAME, TrackDbSchema.TrackTable.Cols.ID + " = ?", whereArgs);
+  }
+
+  public int updateTrack(Track track) {
+    String[] whereArgs = {track.getId().toString()};
+    ContentValues trackContentValues = getTrackContentValues(track);
+    return database.update(TrackDbSchema.TrackTable.NAME, trackContentValues, TrackDbSchema.TrackTable.Cols.ID + " = ?", whereArgs);
   }
 
   private TrackCursorWrapper queryTrack(String whereClause, String[] whereArgs) {

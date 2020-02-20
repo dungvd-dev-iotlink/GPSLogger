@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +43,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
   private TextView tvGPSFixStatus;
   private TextView tvDirectionUM;
   private TextView tvTime;
+  private TextView tvCount;
 
   private TableLayout tlCoordinates;
   private TableLayout tlAltitude;
@@ -51,6 +51,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
   private TableLayout tlBearing;
   private TableLayout tlAccuracy;
   private TableLayout tlTime;
+  private TableLayout tlCount;
 
   private LinearLayout LLTimeSatellites;
 
@@ -95,6 +96,7 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
     tvGPSFixStatus      = view.findViewById(R.id.textViewGPSFixStatus);
     tvDirectionUM       = view.findViewById(R.id.textViewBearingUM);
     tvTime              = view.findViewById(R.id.textViewTime);
+    tvCount             = view.findViewById(R.id.textViewCount);
 
     // TableLayouts
     tlCoordinates       = view.findViewById(R.id.tableLayoutCoordinates) ;
@@ -103,26 +105,10 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
     tlBearing           = view.findViewById(R.id.tableLayoutBearing);
     tlAccuracy          = view.findViewById(R.id.tableLayoutAccuracy);
     tlTime              = view.findViewById(R.id.tableLayoutTime);
+    tlCount             = view.findViewById(R.id.tableLayoutCount);
 
     // LinearLayouts
     LLTimeSatellites    = view.findViewById(R.id.linearLayoutTimeSatellites);
-
-    tvGPSFixStatus.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-//        if (GPSStatus == GPS_DISABLED) {
-//          if (GPSApplication.getInstance().getLocationSettingsFlag()) {
-//            // This is the second click
-//            GPSApplication.getInstance().setLocationSettingsFlag(false);
-//            // Go to Settings screen
-//            Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//            if (callGPSSettingIntent != null) startActivityForResult(callGPSSettingIntent, 0);
-//          } else {
-//            GPSApplication.getInstance().setLocationSettingsFlag(true); // Start the timer
-//          }
-//        }
-      }
-    });
     return view;
   }
 
@@ -148,23 +134,18 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
       tvBearing.setText(decimalFormatShort.format(location.getBearing()));
       tvAccuracy.setText(decimalFormatShort.format(location.getAccuracy()));
       tvTime.setText(location.getTime() + "");
-
-      // Colorize the Altitude textview depending on the altitude EGM Correction
-//      isValidAltitude = EGMAltitudeCorrection && (location.getAltitudeEGM96Correction() != NOT_AVAILABLE);
-//      tvAltitude.setTextColor(isValidAltitude ? getResources().getColor(R.color.textColorPrimary) : getResources().getColor(R.color.textColorSecondary));
-//      tvAltitudeUM.setTextColor(isValidAltitude ? getResources().getColor(R.color.textColorPrimary) : getResources().getColor(R.color.textColorSecondary));
-
       tvGPSFixStatus.setVisibility(View.GONE);
-
       tvDirectionUM.setVisibility(View.VISIBLE);
-      tlTime.setVisibility(View.VISIBLE);
 
+      tlTime.setVisibility(View.VISIBLE);
       tlCoordinates.setVisibility( View.VISIBLE);
       tlAltitude.setVisibility(View.VISIBLE);
       tlSpeed.setVisibility(View.VISIBLE);
       tlBearing.setVisibility(View.VISIBLE);
       tlAccuracy.setVisibility(View.VISIBLE);
       tlTime.setVisibility(View.VISIBLE);
+      tlCount.setVisibility(View.VISIBLE);
+      tvCount.setText(gpsApplication.getTrackRecordingSize() + "");
 
       flGPSFix.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
         @Override
@@ -192,10 +173,9 @@ public class FragmentGPSFix extends Fragment implements LocationListener {
       tlBearing.setVisibility(View.INVISIBLE);
       tlAccuracy.setVisibility(View.INVISIBLE);
       tlTime.setVisibility(View.INVISIBLE);
-
+      tlCount.setVisibility(View.INVISIBLE);
       tvGPSFixStatus.setVisibility(View.VISIBLE);
     }
-    Log.e("duydung", "update Location: " + location);
   }
 
   private void subscribeViewModels() {

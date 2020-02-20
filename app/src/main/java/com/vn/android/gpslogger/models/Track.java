@@ -12,12 +12,14 @@ public class Track {
   private UUID id;
   private String name;
   private String date;
+  private boolean uploaded;
   private List<Point> pointList;
 
   public Track() {
     name = "";
     id = UUID.randomUUID();
     date = new Date().toString();
+    uploaded = false;
     pointList = new ArrayList<>();
   }
 
@@ -55,6 +57,14 @@ public class Track {
 
   public void setDate(String date) {
     this.date = date;
+  }
+
+  public boolean isUploaded() {
+    return uploaded;
+  }
+
+  public void setUploaded(boolean uploaded) {
+    this.uploaded = uploaded;
   }
 
   public String toJSon() {

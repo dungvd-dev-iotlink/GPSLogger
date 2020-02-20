@@ -389,6 +389,53 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayoutCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:id="@+id/tableLayoutCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@drawable/rounded_corner"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:visibility="invisible">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:freezesText="true"
+                        android:gravity="center_horizontal"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:textAppearance="@style/TextAppearanceLargeNumbers"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TextView
+                    android:id="@+id/textViewCountLabel"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/numberPoint"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="13sp" />
+
+            </TableLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
