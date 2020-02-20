@@ -185,9 +185,6 @@ public class GPSApplication extends Application implements LocationListener {
     public void saveTrack(String name) {
         track.setName(name);
         DatabaseManager.getInstance(getApplicationContext()).addTrack(track);
-        ViewPager viewPager = gpsActivity.getViewPager();
-        FragmentTrackList fragmentTrackList = (FragmentTrackList) viewPager.getAdapter().instantiateItem(viewPager, 1);
-        fragmentTrackList.updateUI();
         track = null;
     }
 }

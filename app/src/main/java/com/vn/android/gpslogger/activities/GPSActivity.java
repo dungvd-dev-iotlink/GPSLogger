@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.vn.android.gpslogger.GPSApplication;
 import com.vn.android.gpslogger.NameDialog;
+import com.vn.android.gpslogger.SaveDatabaseTask;
 import com.vn.android.gpslogger.fragments.FragmentGPSFix;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.adapters.ViewPagerAdapter;
@@ -164,6 +165,6 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner, Na
 
   @Override
   public void applyName(String name) {
-    gpsApp.saveTrack(name);
+    new SaveDatabaseTask(this).execute(name);
   }
 }
