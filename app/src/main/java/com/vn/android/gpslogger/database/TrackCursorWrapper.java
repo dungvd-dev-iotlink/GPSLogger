@@ -24,4 +24,8 @@ public class TrackCursorWrapper extends CursorWrapper {
   public String getDate() {
     return getString(getColumnIndex(TrackDbSchema.TrackTable.Cols.DATE));
   }
+
+  public boolean isUploaded() {
+    return getInt(getColumnIndex(TrackDbSchema.TrackTable.Cols.UPLOADED)) == 1;
+  }
 }

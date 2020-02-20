@@ -83,11 +83,11 @@ public class GPSApplication extends Application implements LocationListener {
             Log.e(TAG, "Error when receive NULL Location");
             return;
         }
-        gpsViewModel.updateLocation(location);
         this.location = location;
         if (recording) {
             recordNewTrack(location);
         }
+        gpsViewModel.updateLocation(location);
     }
 
     private void recordNewTrack(Location location) {
@@ -97,7 +97,6 @@ public class GPSApplication extends Application implements LocationListener {
             location.getAccuracy(),
             location.getAltitude());
         track.addPoint(point);
-        Log.e("duydung", "Size cua track la: " + track.getPointList().size());
     }
 
     public Location getLocation() {
@@ -180,6 +179,13 @@ public class GPSApplication extends Application implements LocationListener {
             // TODO : Save track to local memory on other Thread
             gpsActivity.showDialogInputName();
         }
+    }
+
+    public int getTrackRecordingSize() {
+        if (track == null) {
+            return 0;
+        }
+        return track.getPointList().size();
     }
 
     public void saveTrack(String name) {

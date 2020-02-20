@@ -24,6 +24,7 @@ import com.google.firebase.storage.UploadTask;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.database.DatabaseManager;
 import com.vn.android.gpslogger.models.Track;
+import com.vn.android.gpslogger.utils.AppUtil;
 import com.vn.android.gpslogger.viewholders.TrackHolder;
 
 import java.io.BufferedWriter;
@@ -33,10 +34,9 @@ import java.util.List;
 
 public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> {
   private static final String JSON_CACHE_DIR = "json_cache";
-  private static final String JSON_POSTFIX = "json";
   private List<Track> tracks;
   private Context context;
-  private File jsonFile;
+  private File jsonCacheFile;
 
   // instance for fire base storage and StorageReference
   FirebaseStorage storage;
@@ -54,7 +54,7 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
   @Override
   public TrackHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     LayoutInflater layoutInflater = LayoutInflater.from(context);
-    return new TrackHolder(layoutInflater, parent);
+    return new TrackHolder(context, layoutInflater, parent);
   }
 
   @Override
@@ -64,40 +64,6 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
     holder.getItemListLayout().setOnLongClickListener(new View.OnLongClickListener() {
       @Override
       public boolean onLongClick(View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogView = inflater.inflate(R.layout.custom_dialog, null);
-        builder.setView(dialogView);
-        TextView noticeContent = dialogView.findViewById(R.id.noticeContent);
-        noticeContent.setText(R.string.notice_upload_content);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-
-        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            dialog.dismiss();
-          }
-        });
-
-        Button buttonConfirm = dialogView.findViewById(R.id.buttonConfirm);
-        buttonConfirm.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            dialog.dismiss();
-            String json = track.toJSon();
-            saveJSonFileToCache(track.getName(), json);
-            uploadJsonToFireBase(track.getName(), position);
-          }
-        });
-        return false;
-      }
-    });
-
-    holder.getButtonDel().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View dialogView = inflater.inflate(R.layout.custom_dialog, null);
@@ -123,6 +89,40 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
             deleteItem(position);
           }
         });
+        return false;
+      }
+    });
+
+    holder.getButtonUpload().setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialogView = inflater.inflate(R.layout.custom_dialog, null);
+        builder.setView(dialogView);
+        TextView noticeContent = dialogView.findViewById(R.id.noticeContent);
+        noticeContent.setText(R.string.notice_upload_content);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Button buttonCancel = dialogView.findViewById(R.id.buttonCancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            dialog.dismiss();
+          }
+        });
+
+        Button buttonConfirm = dialogView.findViewById(R.id.buttonConfirm);
+        buttonConfirm.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            dialog.dismiss();
+            String json = track.toJSon();
+            saveJSonFileToCache(track.getName(), json);
+            uploadJsonToFireBase(track, position);
+          }
+        });
       }
     });
   }
@@ -142,21 +142,30 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
     notifyDataSetChanged();
   }
 
+  private void updateItemUploaded(int position) {
+    Track track = tracks.get(position);
+    track.setUploaded(true);
+    int update = DatabaseManager.getInstance(context).updateTrack(track);
+    if (update > 0) {
+      notifyDataSetChanged();
+    }
+  }
+
   private void saveJSonFileToCache(String name, String json) {
     File dir = new File(context.getCacheDir(), JSON_CACHE_DIR);
     if (!dir.exists()) {
       dir.mkdir();
     }
-    jsonFile = new File(dir, name + "." + JSON_POSTFIX);
-    if (jsonFile.exists()) {
-      jsonFile.delete();
+    jsonCacheFile = new File(dir, name + "." + AppUtil.JSON_POSTFIX);
+    if (jsonCacheFile.exists()) {
+      jsonCacheFile.delete();
     }
 
     try {
-      if (!jsonFile.createNewFile()) {
+      if (!jsonCacheFile.createNewFile()) {
         Log.e("Error", "Can not create file JSON !");
       }
-      PrintWriter printWriter = new PrintWriter(jsonFile);
+      PrintWriter printWriter = new PrintWriter(jsonCacheFile);
       BufferedWriter bufferedWriter = new BufferedWriter(printWriter);
       bufferedWriter.write(json);
       bufferedWriter.close();
@@ -166,17 +175,17 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
     }
   }
 
-  public void uploadJsonToFireBase(String name, final int position) {
-    if (jsonFile != null) {
+  public void uploadJsonToFireBase(Track track, final int position) {
+    if (jsonCacheFile != null) {
       final ProgressDialog progressDialog = new ProgressDialog(context);
       progressDialog.setTitle(context.getString(R.string.uploading));
       progressDialog.show();
 
       // Defining the child of storageReference
-      StorageReference ref = storageReference.child(JSON_POSTFIX + "/" + name + "." + JSON_POSTFIX);
+      StorageReference ref = storageReference.child(AppUtil.JSON_POSTFIX + "/" + AppUtil.generateName(track));
 
       // adding listeners on upload or failure of image
-      UploadTask updateTask = ref.putFile(Uri.fromFile(jsonFile));
+      UploadTask updateTask = ref.putFile(Uri.fromFile(jsonCacheFile));
       updateTask.addOnFailureListener(new OnFailureListener() {
         @Override
         public void onFailure(@NonNull Exception e) {
@@ -189,8 +198,8 @@ public class TrackRecyclerViewAdapter extends RecyclerView.Adapter<TrackHolder> 
         @Override
         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
           progressDialog.dismiss();
-          deleteItem(position);
-          jsonFile.delete();
+          updateItemUploaded(position);
+          jsonCacheFile.delete();
           Toast.makeText(context, context.getString(R.string.upload_success), Toast.LENGTH_SHORT).show();
         }
       });

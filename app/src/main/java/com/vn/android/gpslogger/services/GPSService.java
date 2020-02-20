@@ -85,7 +85,7 @@ public class GPSService extends Service {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel(
           CHANNEL_ID, getString(R.string.channel_name),
-          NotificationManager.IMPORTANCE_LOW);
+          NotificationManager.IMPORTANCE_HIGH);
       notificationManager.createNotificationChannel(notificationChannel);
     }
 
@@ -94,7 +94,7 @@ public class GPSService extends Service {
         .setColor(getResources().getColor(R.color.colorPrimaryLight))
         .setContentTitle(getString(R.string.app_name))
         .setShowWhen(false)
-        .setPriority(NotificationCompat.PRIORITY_LOW)
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setCategory(NotificationCompat.CATEGORY_SERVICE)
         .setOngoing(true)
         .setContentText(getString(R.string.notification_contentText));
