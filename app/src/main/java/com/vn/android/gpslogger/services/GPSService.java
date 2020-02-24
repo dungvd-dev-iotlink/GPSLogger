@@ -85,7 +85,7 @@ public class GPSService extends Service {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel(
           CHANNEL_ID, getString(R.string.channel_name),
-          NotificationManager.IMPORTANCE_HIGH);
+          NotificationManager.IMPORTANCE_DEFAULT);
       notificationManager.createNotificationChannel(notificationChannel);
     }
 

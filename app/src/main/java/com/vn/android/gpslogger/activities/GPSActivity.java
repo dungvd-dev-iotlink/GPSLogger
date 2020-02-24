@@ -11,7 +11,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -23,6 +25,8 @@ import com.vn.android.gpslogger.fragments.FragmentGPSFix;
 import com.vn.android.gpslogger.R;
 import com.vn.android.gpslogger.adapters.ViewPagerAdapter;
 import com.vn.android.gpslogger.fragments.FragmentTrackList;
+
+import java.util.List;
 
 public class GPSActivity extends AppCompatActivity implements LifecycleOwner, NameDialog.NameDialogListener {
 
@@ -43,6 +47,22 @@ public class GPSActivity extends AppCompatActivity implements LifecycleOwner, Na
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_gps);
 
+    Uri data = getIntent().getData();
+    if (data != null) {
+      String scheme = data.getScheme();
+      String host = data.getHost();
+      List<String> params = data.getPathSegments();
+      if (params.size() > 0) {
+        String first = params.get(0);
+        String second = params.get(1);
+        String third = params.get(2);
+        Log.e("duydung", "scheme : " + scheme);
+        Log.e("duydung", "host : " + host);
+        Log.e("duydung", "first : " + first);
+        Log.e("duydung", "second : " + second);
+        Log.e("duydung", "third : " + third);
+      }
+    }
     lifecycleRegistry = new LifecycleRegistry(this);
     lifecycleRegistry.setCurrentState(Lifecycle.State.CREATED);
 
